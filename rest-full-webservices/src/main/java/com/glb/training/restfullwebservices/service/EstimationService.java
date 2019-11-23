@@ -9,11 +9,11 @@ import com.glb.training.restfullwebservices.model.Estimation;
 @Service
 public class EstimationService {
 
-   public Estimation getEstimationById(final Long estimationId) {
+   public Estimation findOne(final Long estimationId) {
       return new Estimation(estimationId, 5);
    }
 
-   public List<Estimation> getAllEstimations() {
+   public List<Estimation> findAll() {
       return List.of(Estimation.builder().value(1).estimationId(2L).build());
    }
 
