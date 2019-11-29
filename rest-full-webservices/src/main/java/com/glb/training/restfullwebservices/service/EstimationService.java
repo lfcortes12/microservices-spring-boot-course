@@ -42,4 +42,8 @@ public class EstimationService {
       return estimationToSave;
    }
 
+   public boolean deleteById(final Long estimationId) {
+      return estimations.removeIf(estimation -> estimation.getEstimationId().equals(estimationId));
+   }
+
 }

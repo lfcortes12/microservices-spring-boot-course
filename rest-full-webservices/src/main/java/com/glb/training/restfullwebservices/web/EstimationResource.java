@@ -2,10 +2,10 @@ package com.glb.training.restfullwebservices.web;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.glb.training.restfullwebservices.exception.ResourceNotFoundException;
 import com.glb.training.restfullwebservices.model.Estimation;
 import com.glb.training.restfullwebservices.service.EstimationService;
 
@@ -33,12 +34,15 @@ public class EstimationResource {
    }
 
    @GetMapping(path = "/{estimationId}")
-   public ResponseEntity<Optional<Estimation>> getEstimation(@PathVariable Long estimationId) {
-      return ResponseEntity.ok(estimationService.findOne(estimationId));
+   public ResponseEntity<Estimation> getEstimation(@PathVariable final Long estimationId) {
+      Estimation response = estimationService.findOne(estimationId)
+            .orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
+
+      return ResponseEntity.ok(response);
    }
 
    @PostMapping(path = "/")
-   public ResponseEntity<Object> save(@RequestBody Estimation estimation) {
+   public ResponseEntity<Object> save(@RequestBody final Estimation estimation) {
 
       Estimation estimationSaved = estimationService.save(estimation);
       final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}")
@@ -46,4 +50,12 @@ public class EstimationResource {
 
       return ResponseEntity.created(uri).build();
    }
+
+   @DeleteMapping(path = "/{estimationId}")
+   public void save(@PathVariable final Long estimationId) {
+      boolean isRemoved = estimationService.deleteById(estimationId);
+      if (!isRemoved)
+         throw new ResourceNotFoundException("Resource Not Found");
+   }
+
 }
