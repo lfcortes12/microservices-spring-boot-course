@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ import com.glb.training.restfullwebservices.service.EstimationService;
 
 import lombok.AllArgsConstructor;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @RequestMapping(value = "/estimations")
 @RestController
 @AllArgsConstructor
@@ -36,11 +40,13 @@ public class EstimationResource {
    }
 
    @GetMapping(path = "/{estimationId}")
-   public ResponseEntity<Estimation> getEstimation(@PathVariable final Long estimationId) {
+   public EntityModel<Estimation> getEstimation(@PathVariable final Long estimationId) {
       Estimation response = estimationService.findOne(estimationId)
             .orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
+      
+      WebMvcLinkBuilder linkToBuilder = linkTo(methodOn(this.getClass()).getEstimations());
 
-      return ResponseEntity.ok(response);
+      return new EntityModel<Estimation>(response, linkToBuilder.withRel("all-estimations"));
    }
 
    @PostMapping(path = "/")
