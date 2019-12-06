@@ -3,6 +3,8 @@ package com.glb.training.restfullwebservices.web;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,7 +44,7 @@ public class EstimationResource {
    }
 
    @PostMapping(path = "/")
-   public ResponseEntity<Object> save(@RequestBody final Estimation estimation) {
+   public ResponseEntity<Object> save(@RequestBody @Valid final Estimation estimation) {
 
       Estimation estimationSaved = estimationService.save(estimation);
       final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}")

@@ -2,8 +2,10 @@ package com.glb.training.restfullwebservices.exception;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -25,6 +27,14 @@ public class GlbResponseEntityExceptionHandler extends ResponseEntityExceptionHa
       final ExceptionResponse exceptionResponse = ExceptionResponse.builder().eventDateTime(LocalDateTime.now())
             .message(ex.getMessage()).detail(request.getDescription(false)).build();
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+   }
+   
+   @Override
+   protected ResponseEntity<Object> handleMethodArgumentNotValid(
+         MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+      final ExceptionResponse exceptionResponse = ExceptionResponse.builder().eventDateTime(LocalDateTime.now())
+            .message("Validation Failed").detail(ex.getBindingResult().toString()).build();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
    }
 
 }
