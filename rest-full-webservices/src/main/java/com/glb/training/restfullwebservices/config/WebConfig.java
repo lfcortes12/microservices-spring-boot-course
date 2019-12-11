@@ -4,20 +4,30 @@ import java.util.Locale;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class WebConfig {
-   
-   @Bean
-   LocaleResolver localeResolver() {
-      final AcceptHeaderLocaleResolver sessionLocaleResolver = new AcceptHeaderLocaleResolver();
-      sessionLocaleResolver.setDefaultLocale(Locale.US);
-      
-      return sessionLocaleResolver;
-   }
-   
+
+	@Bean
+	LocaleResolver localeResolver() {
+		final AcceptHeaderLocaleResolver sessionLocaleResolver = new AcceptHeaderLocaleResolver();
+		sessionLocaleResolver.setDefaultLocale(Locale.US);
+
+		return sessionLocaleResolver;
+	}
+
+	@Bean
+	CommonsRequestLoggingFilter logFilter() {
+		CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();
+		filter.setIncludeQueryString(true);
+		filter.setIncludePayload(true);
+		filter.setMaxPayloadLength(10000);
+		filter.setIncludeHeaders(true);
+		filter.setAfterMessagePrefix("REQUEST DATA : ");
+		return filter;
+	}
+
 }
