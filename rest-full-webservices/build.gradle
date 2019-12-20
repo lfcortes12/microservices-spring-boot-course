@@ -23,6 +23,7 @@ repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
 	maven { url 'https://repo.spring.io/snapshot' }
+	maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
 }
 
 dependencies {
@@ -31,8 +32,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-	implementation 'io.springfox:springfox-swagger2'
-	implementation 'io.springfox:springfox-swagger-ui'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.2.18'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	compileOnly 'org.projectlombok:lombok'
