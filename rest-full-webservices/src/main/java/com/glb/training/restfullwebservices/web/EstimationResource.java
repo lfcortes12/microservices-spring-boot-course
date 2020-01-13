@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
@@ -33,7 +32,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class EstimationResource {
 
-	@Autowired
 	private final EstimationService estimationService;
 
 	@GetMapping(path = "/")
